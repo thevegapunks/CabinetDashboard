@@ -27,7 +27,7 @@ export class PatientService {
     return this.http.post<Patient>(environment.backendHost+"/patients",patient)
   }
   public deletePatient(id : number){
-    return this.http.delete(environment.backendHost+"/patients/"+id)
+    return this.http.delete(environment.backendHost+"/patients/deletePatientById/"+id)
   }
 
 }

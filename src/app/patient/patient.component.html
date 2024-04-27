@@ -6,12 +6,6 @@
         <div class="card-header">
           <div class="row">
             <div class="col">List of Patients</div>
-            <div class="col"></div>
-            <div class="col">
-              <button class="btn btn-md btn-outline-primary" >
-                <i class="bi bi-geo-alt">New Patient</i>
-              </button>
-            </div>
           </div>
         </div>
         <div class="card-body">
@@ -29,7 +23,17 @@
           <table class="table">
             <thead>
             <tr>
-              <th>ID</th><th>First name</th><th>Last name</th><th>Cin</th><th>Insurance number</th><th>Address</th><th>Email</th><th>Phone</th><th>Family situation</th><th>Actions</th>
+              <th>ID</th><th>First name</th><th>Last name</th><th>Cin</th><th>Insurance number</th><th>Patient</th><th>Email</th><th>Phone</th><th>Family situation</th><th>Actions</th>
+              <th></th>
+              <th>
+                <div >
+                  <button class="btn btn-md btn-success" (click)="open(content)">
+                    <i class="bi bi-person-plus-fill"></i>
+                  </button>
+                </div>
+              </th>
+
+
             </tr>
             </thead>
             <tbody>
@@ -44,13 +48,13 @@
               <td>{{a.phone}}</td>
               <td>{{a.familySituation}}</td>
               <td>
-                <button  class="btn btn-primary" >
-                  <i class="bi bi-geo-alt"></i>
+                <button  class="btn btn-primary" (click)="openDetails(contentDetails,a)" >
+                  <i class="bi bi-eye-fill"></i>
                 </button>
               </td>
               <td>
-                <button  class="btn btn-warning"  >
-                  <!--                (click)="openUpdatePatient(updatePatient, address)"-->
+                <button  class="btn btn-warning" (click)="openEdit(updatePatient, a)" >
+<!--                  (click)="openEdit(updatePatient, patient)"-->
                   <i class="bi bi-pen"></i>
                 </button>
               </td>
@@ -79,4 +83,317 @@
   </div>
 </div>
 
-<!-- Recent Sales End -->
+<!--NewPatientModal-->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">New Patient</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+
+    <form [formGroup]="newPatientFormGroup" (ngSubmit)="handleSavePatient()">
+
+    <div class="row">
+
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label">FirstName:</label>
+          <input type="text" formControlName="firstName" class="form-control" >
+          <span class="text-danger"
+                *ngIf="newPatientFormGroup.controls['firstName'].touched
+                && newPatientFormGroup.controls['firstName'].errors
+                && newPatientFormGroup.controls['firstName'].errors!['required']">
+            firstName is Required
+          </span>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">LastName:</label>
+          <input type="text" formControlName="lastName" class="form-control">
+          <span class="text-danger"
+                *ngIf="newPatientFormGroup.controls['lastName'].touched
+                && newPatientFormGroup.controls['lastName'].errors
+                && newPatientFormGroup.controls['lastName'].errors!['required']">
+            lastName is Required
+          </span>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">insuranceNumber:</label>
+          <input type="text" formControlName="insuranceNumber" class="form-control">
+          <span class="text-danger"
+                *ngIf="newPatientFormGroup.controls['insuranceNumber'].touched
+                && newPatientFormGroup.controls['insuranceNumber'].errors
+                && newPatientFormGroup.controls['insuranceNumber'].errors!['required']">
+            insuranceNumber is Required
+          </span>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">dateOfBirth:</label>
+          <input type="date" formControlName="dateOfBirth" class="form-control">
+          <span class="text-danger"
+                *ngIf="newPatientFormGroup.controls['dateOfBirth'].touched
+                && newPatientFormGroup.controls['dateOfBirth'].errors
+                && newPatientFormGroup.controls['dateOfBirth'].errors!['required']">
+            postalCode is Required
+          </span>
+        </div>
+      </div>
+
+
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label">address:</label>
+          <input type="text" formControlName="address" class="form-control">
+          <span class="text-danger"
+                *ngIf="newPatientFormGroup.controls['address'].touched
+                && newPatientFormGroup.controls['address'].errors
+                && newPatientFormGroup.controls['address'].errors!['required']">
+            address is Required
+          </span>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">email:</label>
+          <input type="text" formControlName="email" class="form-control">
+          <span class="text-danger"
+                *ngIf="newPatientFormGroup.controls['email'].touched
+                && newPatientFormGroup.controls['email'].errors
+                && newPatientFormGroup.controls['email'].errors!['required']">
+            email is Required
+          </span>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">phone:</label>
+          <input type="text" formControlName="phone" class="form-control">
+          <span class="text-danger"
+                *ngIf="newPatientFormGroup.controls['phone'].touched
+                && newPatientFormGroup.controls['phone'].errors
+                && newPatientFormGroup.controls['phone'].errors!['required']">
+            phone is Required
+          </span>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">familySituation:</label>
+          <input type="text" formControlName="familySituation" class="form-control">
+          <span class="text-danger"
+                *ngIf="newPatientFormGroup.controls['familySituation'].touched
+                && newPatientFormGroup.controls['familySituation'].errors
+                && newPatientFormGroup.controls['familySituation'].errors!['required']">
+            familySituation is Required
+          </span>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+      <div class="modal-footer">
+<!--        [disabled]="!newPatientFormGroup.valid"-->
+        <button  class="btn btn-success" (click)="modal.close('Save click')">Save</button>
+        <!--        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>-->
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<!--contentDetails-->
+<ng-template #contentDetails let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title1">Patient Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <form>
+      <div class="form-group">
+        <label>firstName</label>
+        <div class="input-group">
+          <input id="firstName0" class="form-control" readonly>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>lastName</label>
+        <div class="input-group">
+          <input id="lastName0" class="form-control" readonly>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>cin</label>
+        <div class="input-group">
+          <input id="cin0" class="form-control" readonly>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>insuranceNumber</label>
+        <div class="input-group">
+          <input id="insuranceNumber0" class="form-control" readonly>
+        </div>
+      </div>
+      <div class="form-group">
+        <label> dateOfBirth</label>
+        <div class="input-group">
+          <input id="dateOfBirth0" class="form-control" readonly>
+        </div>
+      </div>
+      <div class="form-group">
+        <label> address</label>
+        <div class="input-group">
+          <input id="address0" class="form-control" readonly>
+        </div>
+      </div>
+
+
+      <div class="form-group">
+        <label> email</label>
+        <div class="input-group">
+          <input id="email0" class="form-control" readonly>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label> phone</label>
+        <div class="input-group">
+          <input id="phone0" class="form-control" readonly>
+        </div>
+      </div>
+      <div class="form-group">
+        <label> familySituation</label>
+        <div class="input-group">
+          <input id="familySituation0" class="form-control" readonly>
+        </div>
+      </div>
+
+
+    </form>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Close click')">Close</button>
+  </div>
+</ng-template>
+
+
+<!--updateModalPatient-->
+<ng-template #updatePatient let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title3">Update Patient</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="editPatientFormGroup" (ngSubmit)="handleUpdatePatient()">
+      <div class="mb-3">
+        <label class="form-label">FirstName:</label>
+        <input  id="firstName1" type="text" formControlName="firstName" class="form-control" >
+        <span class="text-danger"
+              *ngIf="newPatientFormGroup.controls['firstName'].touched
+                && newPatientFormGroup.controls['firstName'].errors
+                && newPatientFormGroup.controls['firstName'].errors!['required']">
+            firstName is Required
+          </span>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">LastName:</label>
+        <input type="text" formControlName="lastName" class="form-control">
+        <span class="text-danger"
+              *ngIf="newPatientFormGroup.controls['lastName'].touched
+                && newPatientFormGroup.controls['lastName'].errors
+                && newPatientFormGroup.controls['lastName'].errors!['required']">
+            lastName is Required
+          </span>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">insuranceNumber:</label>
+        <input type="text" formControlName="insuranceNumber" class="form-control">
+        <span class="text-danger"
+              *ngIf="newPatientFormGroup.controls['insuranceNumber'].touched
+                && newPatientFormGroup.controls['insuranceNumber'].errors
+                && newPatientFormGroup.controls['insuranceNumber'].errors!['required']">
+            insuranceNumber is Required
+          </span>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">dateOfBirth:</label>
+        <input type="text" formControlName="dateOfBirth" class="form-control">
+        <span class="text-danger"
+              *ngIf="newPatientFormGroup.controls['dateOfBirth'].touched
+                && newPatientFormGroup.controls['dateOfBirth'].errors
+                && newPatientFormGroup.controls['dateOfBirth'].errors!['required']">
+            postalCode is Required
+          </span>
+      </div>
+
+
+      <div class="mb-3">
+        <label class="form-label">address:</label>
+        <input type="text" formControlName="address" class="form-control">
+        <span class="text-danger"
+              *ngIf="newPatientFormGroup.controls['address'].touched
+                && newPatientFormGroup.controls['address'].errors
+                && newPatientFormGroup.controls['address'].errors!['required']">
+            address is Required
+          </span>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">email:</label>
+        <input type="text" formControlName="email" class="form-control">
+        <span class="text-danger"
+              *ngIf="newPatientFormGroup.controls['email'].touched
+                && newPatientFormGroup.controls['email'].errors
+                && newPatientFormGroup.controls['email'].errors!['required']">
+            email is Required
+          </span>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">phone:</label>
+        <input type="text" formControlName="phone" class="form-control">
+        <span class="text-danger"
+              *ngIf="newPatientFormGroup.controls['phone'].touched
+                && newPatientFormGroup.controls['phone'].errors
+                && newPatientFormGroup.controls['phone'].errors!['required']">
+            phone is Required
+          </span>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">familySituation:</label>
+        <input type="text" formControlName="familySituation" class="form-control">
+        <span class="text-danger"
+              *ngIf="newPatientFormGroup.controls['familySituation'].touched
+                && newPatientFormGroup.controls['familySituation'].errors
+                && newPatientFormGroup.controls['familySituation'].errors!['required']">
+            familySituation is Required
+          </span>
+      </div>
+
+
+      <div class="modal-footer">
+<!--        [disabled]="!editPatientFormGroup.valid"-->
+        <button class="btn btn-info" (click)="modal.close('Save click')">Save change</button>
+        <!--        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>-->
+      </div>
+
+    </form>
+  </div>
+</ng-template>

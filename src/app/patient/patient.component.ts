@@ -175,13 +175,11 @@ export class PatientComponent implements OnInit{
 
 
 
-
-
-
-
   openEdit(updatePatient: TemplateRef<any>, patient: Patient) {
     if (patient) {
       console.log(patient.cin);
+      console.log("open updatePatient");
+
       this.modalService.open(updatePatient, {
         centered: true,
         backdrop: 'static',
