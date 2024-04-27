@@ -1,74 +1,82 @@
 <!-- Recent Sales Start -->
-<div class="container">
-    <div class="container-fluid pt-4 px-4">
-      <div class="bg-light text-center rounded p-4">
-        <div class="d-flex align-items-center justify-content-between mb-4">
-          <h6 class="mb-0">Recent Salse</h6>
-          <a href="">Show All</a>
+<div class="content">
+  <div class="container mt-2">
+    <ng-container *ngIf =" patients | async as listPatients; else failureOrLading">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col">List of Patients</div>
+            <div class="col"></div>
+            <div class="col">
+              <button class="btn btn-md btn-outline-primary" >
+                <i class="bi bi-geo-alt">New Patient</i>
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="table-responsive">
-          <table class="table text-start align-middle table-bordered table-hover mb-0">
+        <div class="card-body">
+          <div *ngIf="searchFormGroup">
+            <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchPatients()">
+              <div class="input-group">
+                <label class="input-group-text">Keyword :</label>
+                <input type="text" formControlName="keyword" class="form-control">
+                <button class="btn btn-info">
+                  <i class="bi bi-search"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+          <table class="table">
             <thead>
-            <tr class="text-dark">
-              <th scope="col"><input class="form-check-input" type="checkbox"></th>
-              <th scope="col">Date</th>
-              <th scope="col">Invoice</th>
-              <th scope="col">Customer</th>
-              <th scope="col">Amount</th>
-              <th scope="col">Status</th>
-              <th scope="col">Action</th>
+            <tr>
+              <th>ID</th><th>firstName</th><th>lastName</th><th>firstName </th><th>cin </th> <th>insuranceNumber</th><th>address </th><th>email </th> <th>phone</th> <th>familySituation</th> <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-              <td><input class="form-check-input" type="checkbox"></td>
-              <td>01 Jan 2045</td>
-              <td>INV-0123</td>
-              <td>Jhon Doe</td>
-              <td>$123</td>
-              <td>Paid</td>
-              <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-            </tr>
-            <tr>
-              <td><input class="form-check-input" type="checkbox"></td>
-              <td>01 Jan 2045</td>
-              <td>INV-0123</td>
-              <td>Jhon Doe</td>
-              <td>$123</td>
-              <td>Paid</td>
-              <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-            </tr>
-            <tr>
-              <td><input class="form-check-input" type="checkbox"></td>
-              <td>01 Jan 2045</td>
-              <td>INV-0123</td>
-              <td>Jhon Doe</td>
-              <td>$123</td>
-              <td>Paid</td>
-              <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-            </tr>
-            <tr>
-              <td><input class="form-check-input" type="checkbox"></td>
-              <td>01 Jan 2045</td>
-              <td>INV-0123</td>
-              <td>Jhon Doe</td>
-              <td>$123</td>
-              <td>Paid</td>
-              <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-            </tr>
-            <tr>
-              <td><input class="form-check-input" type="checkbox"></td>
-              <td>01 Jan 2045</td>
-              <td>INV-0123</td>
-              <td>Jhon Doe</td>
-              <td>$123</td>
-              <td>Paid</td>
-              <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
+            <tr *ngFor="let a of patients | async">
+              <td>{{a.idPatient}}</td>
+              <td>{{a.firstName}}</td>
+              <td>{{a.lastName}}</td>
+              <td>{{a.cin}}</td>
+              <td>{{a.insuranceNumber}}</td>
+              <td>{{a.address}}</td>
+              <td>{{a.email}}</td>
+              <td>{{a.phone}}</td>
+              <td>{{a.familySituation}}</td>
+              <td>
+                <button  class="btn btn-primary" >
+                  <i class="bi bi-geo-alt"></i>
+                </button>
+              </td>
+              <td>
+                <button  class="btn btn-warning"  >
+                  <!--                (click)="openUpdatePatient(updatePatient, address)"-->
+                  <i class="bi bi-pen"></i>
+                </button>
+              </td>
+              <td>
+                <button (click)="handleDeletePatient(a)" class="btn btn-danger">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+
             </tr>
             </tbody>
           </table>
         </div>
       </div>
-    </div>
+    </ng-container>
+    <ng-template #failureOrLading>
+      <ng-container *ngIf="errorMessage; else loading">
+        <div class="text-danger">
+          {{errorMessage}}
+        </div>
+      </ng-container>
+      <ng-template #loading>
+        Loading .....
+      </ng-template>
+    </ng-template>
+  </div>
 </div>
+
 <!-- Recent Sales End -->

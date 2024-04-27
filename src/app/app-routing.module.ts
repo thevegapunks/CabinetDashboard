@@ -1,17 +1,15 @@
-import {RouterModule, Routes} from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { SigninComponent } from './signin/signin.component';
-import { SignupComponent } from './signup/signup.component';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import {PatientComponent} from "./patient/patient.component";
+import {DashboardComponent} from "./dashboard/dashboard.component";
 import {CabinetComponent} from "./cabinet/cabinet.component";
-import {MedicalstaffComponent} from "./medicalstaff/medicalstaff.component";
 import {AppointmentComponent} from "./appointment/appointment.component";
+import {MedicalstaffComponent} from "./medicalstaff/medicalstaff.component";
 import {DocumentComponent} from "./document/document.component";
-import {NgModule} from "@angular/core";
-import {ReactiveFormsModule} from "@angular/forms";
-export const routes: Routes = [
+import {SigninComponent} from "./signin/signin.component";
+import {SignupComponent} from "./signup/signup.component";
+ export const routes: Routes = [
   {
-
     path: 'dashboard', title: 'Mydoc Dashboard', component: DashboardComponent,
     children:[
       {path : "cabinet",component : CabinetComponent},
@@ -23,15 +21,11 @@ export const routes: Routes = [
   {path : "signin",component : SigninComponent},
   {path : "signup",component : SignupComponent},
   {path : "",component : DashboardComponent},
+
 ];
 
-@NgModule(
-  {
-    imports: [RouterModule.forRoot(routes),
-      ReactiveFormsModule
-    ],
-
-    exports:[RouterModule]
-  }
-)
-export class AppRoutes{}
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
