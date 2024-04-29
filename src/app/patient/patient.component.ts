@@ -7,6 +7,7 @@ import {Router} from "@angular/router";
 import { ModalDismissReasons, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { catchError, map } from "rxjs/operators";
 import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
+import {FamilySituation} from "../shared/enums/family-situation.enum";
 @Component({
   selector: 'app-patient',
   standalone: true,
@@ -23,6 +24,7 @@ export class PatientComponent implements OnInit{
 
   patients !: Observable<Array<Patient>>;
   patient!: Patient;
+  familySituations: string[] = Object.keys(FamilySituation).map(key => FamilySituation[key as keyof typeof FamilySituation]);
   errorMessage !: string;
   searchFormGroup !: FormGroup | undefined;
   closeResult!: string;

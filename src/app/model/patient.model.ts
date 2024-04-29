@@ -1,3 +1,5 @@
+import {FamilySituation} from "../shared/enums/family-situation.enum";
+
 export interface Patient {
   idPatient: number;
   firstName: string;
@@ -8,5 +10,5 @@ export interface Patient {
   address: string;
   email: string;
   phone: string;
-  familySituation: string;
+  familySituation: FamilySituation;
 }
