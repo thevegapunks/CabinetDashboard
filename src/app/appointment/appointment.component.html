@@ -1,1 +1,262 @@
-<p>appointment works!</p>
+<div class="content">
+  <div class="container mt-2">
+    <ng-container *ngIf =" appointments | async as listPatients; else failureOrLading">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col">List of Appointments</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div *ngIf="searchFormGroup">
+            <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchAppointments()">
+              <div class="input-group">
+                <label class="input-group-text">Keyword :</label>
+                <input type="text" formControlName="keyword" class="form-control" placeholder="Search by last name...">
+                <button class="btn btn-info">
+                  <i class="bi bi-search"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+          <table class="table">
+            <thead>
+            <tr>
+              <th>ID</th><th>Date</th><th>Time</th><th>ReasonOfAppointment</th><th>activationState</th><th>Confirmation</th><th>stateOfIllness</th><th>stateOfPatient</th><th>Actions</th>
+              <th></th>
+              <th>
+                <div >
+                  <button class="btn btn-md btn-success" (click)="open(content)" >
+                    <i class="bi bi-person-plus-fill"></i>
+                  </button>
+                </div>
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let a of appointments | async">
+              <td>{{a.idAppointment}}</td>
+              <td>{{a.date}}</td>
+              <td>{{a.time}}</td>
+              <td>{{a.reasonOfAppointment}}</td>
+              <td>{{a.activationState}}</td>
+              <td>{{a.confirmation}}</td>
+              <td>{{a.stateOfIllness}}</td>
+              <td>{{a.stateOfPatient}}</td>
+              <td>
+                <button  class="btn btn-primary" (click)="openDetails(contentDetails,a)"  >
+                  <i class="bi bi-eye-fill"></i>
+                </button>
+              </td>
+              <td>
+                <button  class="btn btn-warning"  >
+                  <i class="bi bi-pen"></i>
+                </button>
+              </td>
+              <td>
+                <button  class="btn btn-danger" (click)="handleDeleteAppointment(a)"  >
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #failureOrLading>
+      <ng-container *ngIf="errorMessage; else loading">
+        <div class="text-danger">
+          {{errorMessage}}
+        </div>
+      </ng-container>
+      <ng-template #loading>
+        Loading .....
+      </ng-template>
+    </ng-template>
+  </div>
+</div>
+
+<!--NewAppointmentModal-->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">New Appointment</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+
+    <form [formGroup]="newAppointmentFormGroup" (ngSubmit)="handleSaveAppointment()">
+
+      <div class="row">
+
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label">Date:</label>
+            <input type="date" formControlName="date" class="form-control" >
+            <span class="text-danger"
+                  *ngIf="newAppointmentFormGroup.controls['date'].touched
+                && newAppointmentFormGroup.controls['firstName'].errors
+                && newAppointmentFormGroup.controls['date'].errors!['required']">
+            date is Required
+          </span>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Time:</label>
+            <input type="time" formControlName="time" class="form-control">
+            <span class="text-danger"
+                  *ngIf="newAppointmentFormGroup.controls['time'].touched
+                && newAppointmentFormGroup.controls['time'].errors
+                && newAppointmentFormGroup.controls['time'].errors!['required']">
+            time is Required
+          </span>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">ReasonOfAppointment:</label>
+            <input type="text" formControlName="reasonOfAppointment" class="form-control">
+            <span class="text-danger"
+                  *ngIf="newAppointmentFormGroup.controls['reasonOfAppointment'].touched
+                && newAppointmentFormGroup.controls['reasonOfAppointment'].errors
+                && newAppointmentFormGroup.controls['reasonOfAppointment'].errors!['required']">
+            cin is Required
+          </span>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">activationState:</label>
+            <input type="text" formControlName="activationState" class="form-control">
+            <span class="text-danger"
+                  *ngIf="newAppointmentFormGroup.controls['activationState'].touched
+                && newAppointmentFormGroup.controls['activationState'].errors
+                && newAppointmentFormGroup.controls['activationState'].errors!['required']">
+            activationState is Required
+          </span>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">confirmation:</label>
+            <input type="text" formControlName="confirmation" class="form-control">
+            <span class="text-danger"
+                  *ngIf="newAppointmentFormGroup.controls['confirmation'].touched
+                && newAppointmentFormGroup.controls['confirmation'].errors
+                && newAppointmentFormGroup.controls['confirmation'].errors!['required']">
+            postalCode is Required
+          </span>
+          </div>
+        </div>
+
+
+        <div class="col-md-6">
+
+
+          <div class="mb-3">
+            <label for="stateOfIllness">stateOfIllness</label>
+            <select  id="familySituation" formControlName="stateOfIllness" class="form-control">
+              <option  value="" selected disabled >Select stateOfIllness</option>
+              <option *ngFor="let situation of statesOfIllness" [value]="situation">{{ situation }}</option>
+            </select>
+
+            <!--          <input type="text" formControlName="familySituation" class="form-control">-->
+            <span class="text-danger"
+                  *ngIf="newAppointmentFormGroup.controls['stateOfIllness'].touched
+                && newAppointmentFormGroup.controls['stateOfIllness'].errors
+                && newAppointmentFormGroup.controls['stateOfIllness'].errors!['required']">
+            familySituation is Required
+          </span>
+          </div>
+          <div class="mb-3">
+            <label for="stateOfPatient">statesOfPatient</label>
+            <select  id="stateOfPatient" formControlName="stateOfPatient" class="form-control">
+              <option  value="" selected disabled >Select Family Situation</option>
+              <option *ngFor="let situation of statesOfPatient" [value]="situation">{{ situation }}</option>
+            </select>
+
+            <!--          <input type="text" formControlName="familySituation" class="form-control">-->
+            <span class="text-danger"
+                  *ngIf="newAppointmentFormGroup.controls['stateOfPatient'].touched
+                && newAppointmentFormGroup.controls['stateOfPatient'].errors
+                && newAppointmentFormGroup.controls['stateOfPatient'].errors!['required']">
+            familySituation is Required
+          </span>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="modal-footer">
+<!--        [disabled]="!newAppointmentFormGroup.valid"-->
+        <button  class="btn btn-success" (click)="modal.close('Save click')">Save</button>
+        <!--        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>-->
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<!--contentDetails-->
+<ng-template #contentDetails let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title1">Appointment Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <form>
+
+      <!--      div.row>div.col*2-->
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label>date</label>
+            <div class="input-group">
+              <input id="date0" class="form-control" readonly>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>time</label>
+            <div class="input-group">
+              <input id="time0" class="form-control" readonly>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>reasonOfAppointment</label>
+            <div class="input-group">
+              <input id="reasonOfAppointment0" class="form-control" readonly>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>activationState</label>
+            <div class="input-group">
+              <input id="activationState0" class="form-control" readonly>
+            </div>
+          </div>
+          <div class="form-group">
+            <label> confirmation</label>
+            <div class="input-group">
+              <input id="confirmation0" class="form-control" readonly>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label> stateOfIllness</label>
+            <div class="input-group">
+              <input id="stateOfIllness0" class="form-control" readonly>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </form>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Close click')">Close</button>
+  </div>
+</ng-template>

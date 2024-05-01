@@ -53,7 +53,7 @@ export class PatientComponent implements OnInit{
       address : this.fb.control(null,[Validators.required]),
       email : this.fb.control(null,[Validators.required]),
       phone : this.fb.control(null,[Validators.required]),
-      familySituation : this.fb.control(null,[Validators.required]),
+      familySituation : this.fb.control('Select Family Situation',[Validators.required]),
     })
     this.editPatientFormGroup = this.fb.group({
       idPatient : this.fb.control(null),

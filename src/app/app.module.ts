@@ -8,9 +8,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PatientComponent } from "./patient/patient.component";
 import { CabinetComponent } from "./cabinet/cabinet.component";
 import { AppointmentComponent } from "./appointment/appointment.component";
-import { DashboardComponent } from "./dashboard/dashboard.component";
 import { DocumentComponent } from "./document/document.component";
 import { MedicalstaffComponent } from "./medicalstaff/medicalstaff.component";
+import {DashboardComponent} from "./dashboard/dashboard.component";
 
 
 @NgModule({
