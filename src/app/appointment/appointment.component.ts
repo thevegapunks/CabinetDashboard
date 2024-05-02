@@ -42,10 +42,8 @@ export class AppointmentComponent implements OnInit{
     private modalService: NgbModal
   ) { }
   ngOnInit(): void {
+  this.initializeForm();
 
-    this.searchFormGroup = this.fb.group({
-      keyword: this.fb.control("")
-    });
     this.handleSearchAppointments();
     this.newAppointmentFormGroup = this.fb.group({
       date: this.fb.control(new Date(),[Validators.required]),
@@ -66,6 +64,12 @@ export class AppointmentComponent implements OnInit{
       stateOfIllness : this.fb.control('Select stateOfIllness',[Validators.required]),
       stateOfPatient : this.fb.control('Select stateOfPatient',[Validators.required]),
     })
+  }
+  initializeForm(): void {
+    this.searchFormGroup = this.fb.group({
+        keyword: this.fb.control("")
+      // keyword: [this.getCurrentDate(), [Validators.required]]
+    });
   }
   handleUpdateAppointment(){
     let appointment : Appointment=this.editAppointmentFormGroup.value;
@@ -180,8 +184,17 @@ export class AppointmentComponent implements OnInit{
       console.error("Appointment is null or undefined");
     }
   }
+  getCurrentDate(): string {
+    const currentDate = new Date();
+    // Format the date as YYYY-MM-DD
+    return currentDate.toISOString().substring(0, 10);
+  }
   handleSearchAppointments() {
-    this.appointments = this.appointmentService.getAppointments().pipe(
+    let kw = this.searchFormGroup?.value.keyword;
+    if (kw==null){
+      kw: [this.getCurrentDate(), [Validators.required]]
+    }
+    this.appointments = this.appointmentService.searchAppointments(kw).pipe(
       catchError(err => {
         this.errorMessage = err.message;
         return throwError(err);
