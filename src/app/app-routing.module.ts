@@ -20,7 +20,7 @@ import {SignupComponent} from "./signup/signup.component";
     ]},
   {path : "signin",component : SigninComponent},
   {path : "signup",component : SignupComponent},
-  {path : "",component : DashboardComponent},
+  {path : "",component : SigninComponent},
 
 ];
 

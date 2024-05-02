@@ -22,7 +22,7 @@
           <table class="table">
             <thead>
             <tr>
-              <th>ID</th><th>Date</th><th>Time</th><th>ReasonOfAppointment</th><th>activationState</th><th>Confirmation</th><th>stateOfIllness</th><th>stateOfPatient</th><th>Actions</th>
+              <th>ID</th><th>Date</th><th>Time</th><th>Reason Of Appointment</th><th>Activation State</th><th>Confirmation</th><th>State Of Illness</th><th>State Of Patient</th><th>Actions</th>
               <th></th>
               <th>
                 <div >
@@ -71,7 +71,12 @@
         </div>
       </ng-container>
       <ng-template #loading>
-        Loading .....
+         Spinner Start
+          <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
       </ng-template>
     </ng-template>
   </div>
@@ -100,7 +105,7 @@
                   *ngIf="newAppointmentFormGroup.controls['date'].touched
                 && newAppointmentFormGroup.controls['firstName'].errors
                 && newAppointmentFormGroup.controls['date'].errors!['required']">
-            date is Required
+            Date is Required
           </span>
           </div>
 
@@ -111,37 +116,36 @@
                   *ngIf="newAppointmentFormGroup.controls['time'].touched
                 && newAppointmentFormGroup.controls['time'].errors
                 && newAppointmentFormGroup.controls['time'].errors!['required']">
-            time is Required
+            Time is Required
           </span>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">activationState:</label>
+            <label class="form-label">Activation State:</label>
             <input type="text" formControlName="activationState" class="form-control">
             <span class="text-danger"
                   *ngIf="newAppointmentFormGroup.controls['activationState'].touched
                 && newAppointmentFormGroup.controls['activationState'].errors
                 && newAppointmentFormGroup.controls['activationState'].errors!['required']">
-            activationState is Required
+            Activation State is Required
           </span>
           </div>
         </div>
 
-
         <div class="col-md-6">
 
           <div class="mb-3">
-            <label class="form-label">confirmation:</label>
+            <label class="form-label">Confirmation:</label>
             <input type="text" formControlName="confirmation" class="form-control">
             <span class="text-danger"
                   *ngIf="newAppointmentFormGroup.controls['confirmation'].touched
                 && newAppointmentFormGroup.controls['confirmation'].errors
                 && newAppointmentFormGroup.controls['confirmation'].errors!['required']">
-            postalCode is Required
+            Confirmation is Required
           </span>
           </div>
           <div class="mb-3">
-            <label for="stateOfIllness">stateOfIllness</label>
+            <label for="stateOfIllness">state Of Illness</label>
             <select  id="familySituation" formControlName="stateOfIllness" class="form-control">
               <option  value="" selected disabled >Select stateOfIllness</option>
               <option *ngFor="let situation of statesOfIllness" [value]="situation">{{ situation }}</option>
@@ -152,11 +156,11 @@
                   *ngIf="newAppointmentFormGroup.controls['stateOfIllness'].touched
                 && newAppointmentFormGroup.controls['stateOfIllness'].errors
                 && newAppointmentFormGroup.controls['stateOfIllness'].errors!['required']">
-            familySituation is Required
+            State Of Illness is Required
           </span>
           </div>
           <div class="mb-3">
-            <label for="stateOfPatient">statesOfPatient</label>
+            <label for="stateOfPatient">States Of Patient</label>
             <select  id="stateOfPatient" formControlName="stateOfPatient" class="form-control">
               <option  value="" selected disabled >Select Family Situation</option>
               <option *ngFor="let situation of statesOfPatient" [value]="situation">{{ situation }}</option>
@@ -167,20 +171,20 @@
                   *ngIf="newAppointmentFormGroup.controls['stateOfPatient'].touched
                 && newAppointmentFormGroup.controls['stateOfPatient'].errors
                 && newAppointmentFormGroup.controls['stateOfPatient'].errors!['required']">
-            familySituation is Required
+            Family Situation is Required
           </span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="mb-3">
-          <label class="form-label">ReasonOfAppointment:</label>
+          <label class="form-label">Reason Of Appointment:</label>
           <input type="text" formControlName="reasonOfAppointment" class="form-control">
           <span class="text-danger"
                 *ngIf="newAppointmentFormGroup.controls['reasonOfAppointment'].touched
                 && newAppointmentFormGroup.controls['reasonOfAppointment'].errors
                 && newAppointmentFormGroup.controls['reasonOfAppointment'].errors!['required']">
-            cin is Required
+            Reason Of Appointment is Required
           </span>
         </div>
       </div>
@@ -208,20 +212,20 @@
       <div class="row">
         <div class="col">
           <div class="form-group">
-            <label>date</label>
+            <label>Date</label>
             <div class="input-group">
               <input id="date0" class="form-control" readonly>
             </div>
           </div>
           <div class="form-group">
-            <label>time</label>
+            <label>Time</label>
             <div class="input-group">
               <input id="time0" class="form-control" readonly>
             </div>
           </div>
 
           <div class="form-group">
-            <label>activationState</label>
+            <label>Activation State</label>
             <div class="input-group">
               <input id="activationState0" class="form-control" readonly>
             </div>
@@ -230,19 +234,19 @@
         </div>
         <div class="col">
           <div class="form-group">
-            <label> confirmation</label>
+            <label>Confirmation</label>
             <div class="input-group">
               <input id="confirmation0" class="form-control" readonly>
             </div>
           </div>
           <div class="form-group">
-            <label> stateOfIllness</label>
+            <label>State Of Illness</label>
             <div class="input-group">
               <input id="stateOfIllness0" class="form-control" readonly>
             </div>
           </div>
           <div class="form-group">
-            <label> stateOfPatient</label>
+            <label>State Of Patient</label>
             <div class="input-group">
               <input id="stateOfPatient0" class="form-control" readonly>
             </div>
@@ -251,7 +255,7 @@
       </div>
       <div class="row">
         <div class="form-group">
-          <label>reasonOfAppointment</label>
+          <label>Reason Of Appointment</label>
           <div class="input-group">
             <input id="reasonOfAppointment0" class="form-control" readonly>
           </div>
@@ -285,7 +289,7 @@
                   *ngIf="newAppointmentFormGroup.controls['date'].touched
                 && newAppointmentFormGroup.controls['date'].errors
                 && newAppointmentFormGroup.controls['date'].errors!['required']">
-            date is Required
+            Date is Required
           </span>
           </div>
 
@@ -296,20 +300,20 @@
                   *ngIf="newAppointmentFormGroup.controls['time'].touched
                 && newAppointmentFormGroup.controls['time'].errors
                 && newAppointmentFormGroup.controls['time'].errors!['required']">
-            time is Required
+            Time is Required
           </span>
           </div>
 
 
 
           <div class="mb-3">
-            <label class="form-label">activationState:</label>
+            <label class="form-label">Activation State:</label>
             <input type="text" formControlName="activationState" class="form-control">
             <span class="text-danger"
                   *ngIf="newAppointmentFormGroup.controls['activationState'].touched
                 && newAppointmentFormGroup.controls['activationState'].errors
                 && newAppointmentFormGroup.controls['activationState'].errors!['required']">
-            activationState is Required
+            Activation State is Required
           </span>
           </div>
 
@@ -324,11 +328,11 @@
                   *ngIf="newAppointmentFormGroup.controls['confirmation'].touched
                 && newAppointmentFormGroup.controls['confirmation'].errors
                 && newAppointmentFormGroup.controls['confirmation'].errors!['required']">
-            confirmation is Required
+            Confirmation is Required
           </span>
           </div>
           <div class="mb-3">
-            <label class="form-label">stateOfIllness:</label>
+            <label class="form-label">State Of Illness:</label>
             <select formControlName="stateOfIllness" class="form-control">
               <option *ngFor="let situation of statesOfIllness" [value]="situation">{{ situation }}</option>
             </select>
@@ -336,11 +340,11 @@
                   *ngIf="newAppointmentFormGroup.controls['stateOfIllness'].touched
                 && newAppointmentFormGroup.controls['stateOfIllness'].errors
                 && newAppointmentFormGroup.controls['stateOfIllness'].errors!['required']">
-            stateOfIllness is Required
+            State Of Illness is Required
           </span>
           </div>
           <div class="mb-3">
-            <label class="form-label">stateOfPatient:</label>
+            <label class="form-label">State Of Patient:</label>
             <select formControlName="stateOfPatient" class="form-control">
               <option *ngFor="let situation of statesOfPatient" [value]="situation">{{ situation }}</option>
             </select>
@@ -348,20 +352,20 @@
                   *ngIf="newAppointmentFormGroup.controls['stateOfPatient'].touched
                 && newAppointmentFormGroup.controls['stateOfPatient'].errors
                 && newAppointmentFormGroup.controls['stateOfPatient'].errors!['required']">
-            stateOfPatient is Required
+            State Of Patient is Required
           </span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="mb-3">
-          <label class="form-label">ReasonOfAppointment:</label>
+          <label class="form-label">Reason Of Appointment:</label>
           <input type="text" formControlName="reasonOfAppointment" class="form-control">
           <span class="text-danger"
                 *ngIf="newAppointmentFormGroup.controls['reasonOfAppointment'].touched
                 && newAppointmentFormGroup.controls['reasonOfAppointment'].errors
                 && newAppointmentFormGroup.controls['reasonOfAppointment'].errors!['required']">
-            reasonOfAppointment is Required
+            Reason Of Appointment is Required
           </span>
         </div>
       </div>

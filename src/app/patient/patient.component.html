@@ -1,11 +1,11 @@
 <!-- Recent Sales Start -->
-<div class="content">
-  <div class="container mt-2">
+<div class="content d-flex justify-content-center">
+  <div class="container">
     <ng-container *ngIf =" patients | async as listPatients; else failureOrLading">
       <div class="card">
         <div class="card-header">
-          <div class="row">
-            <div class="col">List of Patients</div>
+          <div class="row-cols-auto">
+            <div class="row-cols-auto">List of Patients</div>
           </div>
         </div>
         <div class="card-body">
@@ -20,6 +20,7 @@
               </div>
             </form>
           </div>
+
           <table class="table">
             <thead>
             <tr>
@@ -92,10 +93,10 @@
 
     <form [formGroup]="newPatientFormGroup" (ngSubmit)="handleSavePatient()">
 
-      <div class="row">
+      <div class="row-cols-auto">
 
-        <div class="col-md-6">
-          <div class="mb-3">
+        <div class="col-md-auto">
+          <div class="mb-auto">
             <label class="form-label">FirstName:</label>
             <input type="text" formControlName="firstName" class="form-control" >
             <span class="text-danger"
@@ -106,7 +107,7 @@
           </span>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-auto">
             <label class="form-label">LastName:</label>
             <input type="text" formControlName="lastName" class="form-control">
             <span class="text-danger"
@@ -116,7 +117,7 @@
             lastName is Required
           </span>
           </div>
-          <div class="mb-3">
+          <div class="mb-auto">
             <label class="form-label">Cin:</label>
             <input type="text" formControlName="cin" class="form-control">
             <span class="text-danger"
@@ -127,7 +128,7 @@
           </span>
           </div>
 
-          <div class="mb-3">
+          <div class="mb-auto">
             <label class="form-label">insuranceNumber:</label>
             <input type="text" formControlName="insuranceNumber" class="form-control">
             <span class="text-danger"
