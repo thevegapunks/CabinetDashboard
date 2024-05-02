@@ -48,7 +48,7 @@ export class AppointmentComponent implements OnInit{
     });
     this.handleSearchAppointments();
     this.newAppointmentFormGroup = this.fb.group({
-      date: this.fb.control(null,[Validators.required]),
+      date: this.fb.control(new Date(),[Validators.required]),
       time : this.fb.control(null,[Validators.required]),
       reasonOfAppointment : this.fb.control(null,[Validators.required]),
       activationState : this.fb.control(null,[Validators.required]),
