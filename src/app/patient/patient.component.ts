@@ -8,6 +8,8 @@ import { ModalDismissReasons, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { catchError, map } from "rxjs/operators";
 import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
 import {FamilySituation} from "../shared/enums/family-situation.enum";
+import {Appointment} from "../model/appointment.model";
+import {AppointmentService} from "../services/appointment.service";
 @Component({
   selector: 'app-patient',
   standalone: true,
@@ -29,11 +31,13 @@ export class PatientComponent implements OnInit{
   searchFormGroup !: FormGroup | undefined;
   closeResult!: string;
   newPatientFormGroup! :FormGroup;
+  newAppwithPatientFormGroup!: FormGroup;
   editPatientFormGroup!: FormGroup;
   @ViewChild('myModal') myModal!: TemplateRef<any>;
 
   constructor(
     private patientService: PatientService,
+    private appointmentService: AppointmentService,
     private fb: FormBuilder,
     private router: Router,
     private modalService: NgbModal
@@ -44,6 +48,18 @@ export class PatientComponent implements OnInit{
       keyword: this.fb.control("")
     });
     this.handleSearchPatients();
+    this.newAppwithPatientFormGroup = this.fb.group({
+      patientId : this.fb.control(null),
+      date: this.fb.control(new Date()),
+      time : this.fb.control(null),
+      reasonOfAppointment : this.fb.control('default value...'),
+      activationState : this.fb.control('true'),
+      confirmation : this.fb.control('true'),
+      stateOfIllness : this.fb.control('STABLE'),
+      stateOfPatient : this.fb.control('CALM'),
+    })
+
+
     this.newPatientFormGroup = this.fb.group({
       firstName : this.fb.control(null,[Validators.required,Validators.minLength(4)]),
       lastName : this.fb.control(null,[Validators.required,Validators.minLength(4)]),
@@ -123,7 +139,37 @@ export class PatientComponent implements OnInit{
       }
     })
   }
+  handleSaveAppointmentWithPatient(){
+    let appointment : Appointment=this.newAppwithPatientFormGroup.value;
+    console.log("my patient id is :"+appointment.patientId);
 
+    this.appointmentService.saveAppointment(appointment).subscribe({
+      next : value => {
+        alert("Appointment has been successfully saved ");
+        this.ngOnInit();
+      },error : err => {
+        alert("Appointment has Not been saved problem in saveAppointment ");
+        console.log(err);
+      }
+    });
+  }
+  openFormAppointment(addAppointment: TemplateRef<any>, patient: Patient) {
+    if (patient) {
+      console.log("selected id patient "+patient.idPatient);
+      this.modalService.open(addAppointment, {
+        centered: true,
+        backdrop: 'static',
+        size: 'lg',
+      });
+      this.newAppwithPatientFormGroup.patchValue( {
+        patientId: patient.idPatient,
+      });
+
+
+    } else {
+      console.error("Patient is null or undefined");
+    }
+  }
   open(content: TemplateRef<any>) {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result: any) => {
       this.closeResult = `Closed with: ${result}`;
