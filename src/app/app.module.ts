@@ -10,7 +10,8 @@ import { CabinetComponent } from "./cabinet/cabinet.component";
 import { AppointmentComponent } from "./appointment/appointment.component";
 import { DocumentComponent } from "./document/document.component";
 import { MedicalstaffComponent } from "./medicalstaff/medicalstaff.component";
-import {DashboardComponent} from "./dashboard/dashboard.component";
+import { DashboardComponent } from "./dashboard/dashboard.component";
+import { HomeComponent } from "./home/home.component";
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {DashboardComponent} from "./dashboard/dashboard.component";
     AppointmentComponent,
     DashboardComponent,
     DocumentComponent,
-    MedicalstaffComponent
+    MedicalstaffComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -31,8 +33,7 @@ import {DashboardComponent} from "./dashboard/dashboard.component";
     NgbModule,
     FormsModule
   ],
-  providers: [
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

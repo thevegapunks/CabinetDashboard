@@ -12,10 +12,15 @@
             <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchAppointments()">
               <div class="input-group">
                 <label class="input-group-text">Search by Date</label>
-                <input type="date"  formControlName="keyword" class="form-control">
-                <button class="btn btn-info">
-                  <i class="bi bi-search"></i>
-                </button>
+                <input type="date" formControlName="keyword" class="form-control" (change)="handleSearchAppointments()">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-secondary mx-1" (click)="handleSearchByWeek()">Semaine</button>
+                  <button type="button" class="btn btn-secondary mx-1" (click)="handleSearchByMonth()" >Mois</button>
+                  <button type="button" class="btn btn-secondary mx-1" (click)="handleSearchByYear()">Année</button>
+                  <button class="btn btn-md btn-success mx-1" (click)="open(content)">
+                    <i class="bi bi-person-plus-fill"></i>
+                  </button>
+                </div>
               </div>
             </form>
           </div>
@@ -24,13 +29,6 @@
             <tr>
               <th>ID</th><th>Date</th><th>Time</th><th>Reason Of Appointment</th><th>Activation State</th><th>Confirmation</th><th>State Of Illness</th><th>State Of Patient</th><th>Actions</th>
               <th></th>
-              <th>
-                <div >
-                  <button class="btn btn-md btn-success" (click)="open(content)" >
-                    <i class="bi bi-person-plus-fill"></i>
-                  </button>
-                </div>
-              </th>
             </tr>
             </thead>
             <tbody>
@@ -44,25 +42,29 @@
               <td>{{a.stateOfIllness}}</td>
               <td>{{a.stateOfPatient}}</td>
               <td>
-                <button  class="btn btn-primary" (click)="openDetails(contentDetails,a)"  >
+                <div class="btn-group">
+                <button  class="btn btn-primary mx-1" (click)="openDetails(contentDetails,a)"  >
                   <i class="bi bi-eye-fill"></i>
                 </button>
-              </td>
-              <td>
-                <button  class="btn btn-warning" (click)="openEdit(updateAppointment,a)" >
-                  <i class="bi bi-pen"></i>
-                </button>
-              </td>
-              <td>
-                <button  class="btn btn-danger" (click)="handleDeleteAppointment(a)"  >
-                  <i class="bi bi-trash"></i>
-                </button>
+                  <button  class="btn btn-warning mx-1" (click)="openEdit(updateAppointment,a)" >
+                    <i class="bi bi-pen"></i>
+                  </button>
+                  <button  class="btn btn-danger mx-1" (click)="handleDeleteAppointment(a)"  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
               </td>
             </tr>
             </tbody>
           </table>
         </div>
+
+
+
+
+
       </div>
+
     </ng-container>
     <ng-template #failureOrLading>
       <ng-container *ngIf="errorMessage; else loading">
@@ -70,6 +72,8 @@
           {{errorMessage}}
         </div>
       </ng-container>
+
+
       <ng-template #loading>
          Spinner Start
           <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -91,16 +95,12 @@
     </button>
   </div>
   <div class="modal-body">
-
-
     <form [formGroup]="newAppointmentFormGroup" (ngSubmit)="handleSaveAppointment()">
-
       <div class="row">
-
         <div class="col-md-6">
           <div class="mb-3">
             <label class="form-label">Date:</label>
-            <input  type="date" formControlName="date" class="form-control" >
+            <input  type="date" formControlName="date" class="form-control" [value]="getCurrentDate()">
             <span class="text-danger"
                   *ngIf="newAppointmentFormGroup.controls['date'].touched
                 && newAppointmentFormGroup.controls['firstName'].errors
@@ -108,7 +108,6 @@
             Date is Required
           </span>
           </div>
-
           <div class="mb-3">
             <label class="form-label">Time:</label>
             <input type="time" formControlName="time" class="form-control">
@@ -122,7 +121,14 @@
 
           <div class="mb-3">
             <label class="form-label">Activation State:</label>
-            <input type="text" formControlName="activationState" class="form-control">
+            <div class="form-check">
+              <input  type="radio" class="form-check-input" formControlName="activationState" id="activationStateTrue" name="activationState" [value]="true" >
+              <label class="form-check-label" for="activationStateTrue" >True</label>
+            </div>
+            <div class="form-check">
+              <input type="radio" class="form-check-input" formControlName="activationState" id="activationStateFalse" name="activationState" [value]="false">
+              <label class="form-check-label" for="activationStateFalse">False</label>
+            </div>
             <span class="text-danger"
                   *ngIf="newAppointmentFormGroup.controls['activationState'].touched
                 && newAppointmentFormGroup.controls['activationState'].errors
@@ -136,7 +142,14 @@
 
           <div class="mb-3">
             <label class="form-label">Confirmation:</label>
-            <input type="text" formControlName="confirmation" class="form-control">
+            <div class="form-check">
+              <input type="radio" class="form-check-input" formControlName="confirmation" id="confirmationTrue" name="confirmation" [value]="true">
+              <label class="form-check-label" for="confirmationTrue">True</label>
+            </div>
+            <div class="form-check">
+              <input type="radio" class="form-check-input" formControlName="confirmation" id="confirmationFalse" name="confirmation" [value]="false">
+              <label class="form-check-label" for="confirmationFalse">False</label>
+            </div>
             <span class="text-danger"
                   *ngIf="newAppointmentFormGroup.controls['confirmation'].touched
                 && newAppointmentFormGroup.controls['confirmation'].errors
@@ -146,11 +159,10 @@
           </div>
           <div class="mb-3">
             <label for="stateOfIllness">state Of Illness</label>
-            <select  id="familySituation" formControlName="stateOfIllness" class="form-control">
+            <select  id="familySituation" formControlName="stateOfIllness" class="form-control"[(ngModel)]="selectedStateOfIllness">
               <option  value="" selected disabled >Select stateOfIllness</option>
               <option *ngFor="let situation of statesOfIllness" [value]="situation">{{ situation }}</option>
             </select>
-
             <!--          <input type="text" formControlName="familySituation" class="form-control">-->
             <span class="text-danger"
                   *ngIf="newAppointmentFormGroup.controls['stateOfIllness'].touched
@@ -161,7 +173,7 @@
           </div>
           <div class="mb-3">
             <label for="stateOfPatient">States Of Patient</label>
-            <select  id="stateOfPatient" formControlName="stateOfPatient" class="form-control">
+            <select  id="stateOfPatient" formControlName="stateOfPatient" class="form-control" [(ngModel)]="selectStateOfPatients">
               <option  value="" selected disabled >Select Family Situation</option>
               <option *ngFor="let situation of statesOfPatient" [value]="situation">{{ situation }}</option>
             </select>
@@ -205,9 +217,7 @@
     </button>
   </div>
   <div class="modal-body">
-
     <form>
-
       <!--      div.row>div.col*2-->
       <div class="row">
         <div class="col">
@@ -230,7 +240,6 @@
               <input id="activationState0" class="form-control" readonly>
             </div>
           </div>
-
         </div>
         <div class="col">
           <div class="form-group">
@@ -292,7 +301,6 @@
             Date is Required
           </span>
           </div>
-
           <div class="mb-3">
             <label class="form-label">Time:</label>
             <input type="time" formControlName="time" class="form-control">
@@ -303,27 +311,36 @@
             Time is Required
           </span>
           </div>
-
-
-
           <div class="mb-3">
             <label class="form-label">Activation State:</label>
-            <input type="text" formControlName="activationState" class="form-control">
+            <div class="form-check">
+              <input type="radio" class="form-check-input" formControlName="activationState" id="updateactivationStateTrue" name="activationState" value="TRUE">
+              <label class="form-check-label" for="updateactivationStateTrue">True</label>
+            </div>
+            <div class="form-check">
+              <input type="radio" class="form-check-input" formControlName="activationState" id="updateactivationStateFalse" name="activationState" value="FALSE">
+              <label class="form-check-label" for="updateactivationStateFalse">False</label>
+            </div>
             <span class="text-danger"
                   *ngIf="newAppointmentFormGroup.controls['activationState'].touched
-                && newAppointmentFormGroup.controls['activationState'].errors
-                && newAppointmentFormGroup.controls['activationState'].errors!['required']">
-            Activation State is Required
-          </span>
+        && newAppointmentFormGroup.controls['activationState'].errors
+        && newAppointmentFormGroup.controls['activationState'].errors!['required']">
+    Activation State is Required
+  </span>
           </div>
-
 
         </div>
         <div class="col-md-6">
-
           <div class="mb-3">
             <label class="form-label">Confirmation:</label>
-            <input type="text" formControlName="confirmation" class="form-control">
+            <div class="form-check">
+              <input type="radio" class="form-check-input" formControlName="confirmation" id="updateconfirmationStateTrue" name="confirmation" value="TRUE">
+              <label class="form-check-label" for="updateconfirmationStateTrue">True</label>
+            </div>
+            <div class="form-check">
+              <input type="radio" formControlName="confirmation" class="form-check-input" id="updateconfirmationStateFalse" name="confirmation" value="FALSE">
+              <label class="form-check-label" for="updateconfirmationStateFalse">False</label>
+            </div>
             <span class="text-danger"
                   *ngIf="newAppointmentFormGroup.controls['confirmation'].touched
                 && newAppointmentFormGroup.controls['confirmation'].errors
@@ -376,4 +393,5 @@
 
     </form>
   </div>
+
 </ng-template>

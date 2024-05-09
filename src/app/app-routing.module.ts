@@ -8,6 +8,7 @@ import {MedicalstaffComponent} from "./medicalstaff/medicalstaff.component";
 import {DocumentComponent} from "./document/document.component";
 import {SigninComponent} from "./signin/signin.component";
 import {SignupComponent} from "./signup/signup.component";
+import {HomeComponent} from "./home/home.component";
  export const routes: Routes = [
   {
     path: 'dashboard', title: 'Mydoc Dashboard', component: DashboardComponent,
@@ -17,10 +18,12 @@ import {SignupComponent} from "./signup/signup.component";
       {path : "appointment",component : AppointmentComponent},
       {path : "medicalstaff",component : MedicalstaffComponent},
       {path : "document",component : DocumentComponent},
+      {path : "home",component : HomeComponent},
+
     ]},
   {path : "signin",component : SigninComponent},
   {path : "signup",component : SignupComponent},
-  {path : "",component : SigninComponent},
+  {path : "",component : HomeComponent},
 
 ];
 

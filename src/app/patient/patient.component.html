@@ -27,7 +27,7 @@
               <th>ID</th><th>First name</th><th>Last name</th><th>Cin</th><th>Insurance number</th><th>Patient</th><th>Email</th><th>Phone</th><th>Family situation</th><th>Actions</th>
               <th></th>
               <th>
-                <div >
+                <div>
                   <button class="btn btn-md btn-success" (click)="open(content)">
                     <i class="bi bi-person-plus-fill"></i>
                   </button>
@@ -47,19 +47,17 @@
               <td>{{a.phone}}</td>
               <td>{{a.familySituation}}</td>
               <td>
-                <button  class="btn btn-primary" (click)="openDetails(contentDetails,a)" >
+                <div class="btn-group">
+                <button  class="btn btn-primary mx-1" (click)="openDetails(contentDetails,a)" >
                   <i class="bi bi-eye-fill"></i>
                 </button>
-              </td>
-              <td>
-                <button  class="btn btn-warning" (click)="openEdit(updatePatient, a)" >
-                  <i class="bi bi-pen"></i>
-                </button>
-              </td>
-              <td>
-                <button  class="btn btn-danger" (click)="handleDeletePatient(a)" >
-                  <i class="bi bi-trash"></i>
-                </button>
+                  <button  class="btn btn-warning mx-1" (click)="openEdit(updatePatient, a)" >
+                    <i class="bi bi-pen"></i>
+                  </button>
+                  <button  class="btn btn-danger mx-1" (click)="handleDeletePatient(a)" >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
               </td>
             </tr>
             </tbody>
@@ -97,24 +95,24 @@
 
         <div class="col-md-auto">
           <div class="mb-auto">
-            <label class="form-label">FirstName:</label>
+            <label class="form-label">First Name:</label>
             <input type="text" formControlName="firstName" class="form-control" >
             <span class="text-danger"
                   *ngIf="newPatientFormGroup.controls['firstName'].touched
                 && newPatientFormGroup.controls['firstName'].errors
                 && newPatientFormGroup.controls['firstName'].errors!['required']">
-            firstName is Required
+            First Name is Required
           </span>
           </div>
 
           <div class="mb-auto">
-            <label class="form-label">LastName:</label>
+            <label class="form-label">Last Name:</label>
             <input type="text" formControlName="lastName" class="form-control">
             <span class="text-danger"
                   *ngIf="newPatientFormGroup.controls['lastName'].touched
                 && newPatientFormGroup.controls['lastName'].errors
                 && newPatientFormGroup.controls['lastName'].errors!['required']">
-            lastName is Required
+            last Name is Required
           </span>
           </div>
           <div class="mb-auto">
@@ -124,29 +122,29 @@
                   *ngIf="newPatientFormGroup.controls['cin'].touched
                 && newPatientFormGroup.controls['cin'].errors
                 && newPatientFormGroup.controls['cin'].errors!['required']">
-            cin is Required
+            Cin is Required
           </span>
           </div>
 
           <div class="mb-auto">
-            <label class="form-label">insuranceNumber:</label>
+            <label class="form-label">Insurance Number:</label>
             <input type="text" formControlName="insuranceNumber" class="form-control">
             <span class="text-danger"
                   *ngIf="newPatientFormGroup.controls['insuranceNumber'].touched
                 && newPatientFormGroup.controls['insuranceNumber'].errors
                 && newPatientFormGroup.controls['insuranceNumber'].errors!['required']">
-            insuranceNumber is Required
+            Insurance Number is Required
           </span>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">dateOfBirth:</label>
+            <label class="form-label">Date Of Birth:</label>
             <input type="date" formControlName="dateOfBirth" class="form-control">
             <span class="text-danger"
                   *ngIf="newPatientFormGroup.controls['dateOfBirth'].touched
                 && newPatientFormGroup.controls['dateOfBirth'].errors
                 && newPatientFormGroup.controls['dateOfBirth'].errors!['required']">
-            postalCode is Required
+            Date Of Birth is Required
           </span>
           </div>
         </div>
@@ -154,42 +152,42 @@
 
         <div class="col-md-6">
           <div class="mb-3">
-            <label class="form-label">address:</label>
+            <label class="form-label">Address:</label>
             <input type="text" formControlName="address" class="form-control">
             <span class="text-danger"
                   *ngIf="newPatientFormGroup.controls['address'].touched
                 && newPatientFormGroup.controls['address'].errors
                 && newPatientFormGroup.controls['address'].errors!['required']">
-            address is Required
+            Address is Required
           </span>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">email:</label>
+            <label class="form-label">Email:</label>
             <input type="text" formControlName="email" class="form-control">
             <span class="text-danger"
                   *ngIf="newPatientFormGroup.controls['email'].touched
                 && newPatientFormGroup.controls['email'].errors
                 && newPatientFormGroup.controls['email'].errors!['required']">
-            email is Required
+            Email is Required
           </span>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">phone:</label>
+            <label class="form-label">Phone:</label>
             <input type="text" formControlName="phone" class="form-control">
             <span class="text-danger"
                   *ngIf="newPatientFormGroup.controls['phone'].touched
                 && newPatientFormGroup.controls['phone'].errors
                 && newPatientFormGroup.controls['phone'].errors!['required']">
-            phone is Required
+            Phone is Required
           </span>
           </div>
 
           <div class="mb-3">
             <label for="familySituation">Family Situation</label>
-            <select  id="familySituation" formControlName="familySituation" class="form-control">
-              <option  value="" selected disabled >Select Family Situation</option>
+            <select id="familySituation" formControlName="familySituation" class="form-control" [(ngModel)]="selectedFamilySituation">
+              <option value="" disabled [selected]="!selectedFamilySituation">Select Family Situation</option>
               <option *ngFor="let situation of familySituations" [value]="situation">{{ situation }}</option>
             </select>
 
@@ -198,7 +196,7 @@
                   *ngIf="newPatientFormGroup.controls['familySituation'].touched
                 && newPatientFormGroup.controls['familySituation'].errors
                 && newPatientFormGroup.controls['familySituation'].errors!['required']">
-            familySituation is Required
+            Family Situation is Required
           </span>
           </div>
         </div>
@@ -230,31 +228,31 @@
       <div class="row">
         <div class="col">
           <div class="form-group">
-            <label>firstName</label>
+            <label>First Name</label>
             <div class="input-group">
               <input id="firstName0" class="form-control" readonly>
             </div>
           </div>
           <div class="form-group">
-            <label>lastName</label>
+            <label>Last Name</label>
             <div class="input-group">
               <input id="lastName0" class="form-control" readonly>
             </div>
           </div>
           <div class="form-group">
-            <label>cin</label>
+            <label>Cin</label>
             <div class="input-group">
               <input id="cin0" class="form-control" readonly>
             </div>
           </div>
           <div class="form-group">
-            <label>insuranceNumber</label>
+            <label>Insurance Number</label>
             <div class="input-group">
               <input id="insuranceNumber0" class="form-control" readonly>
             </div>
           </div>
           <div class="form-group">
-            <label> dateOfBirth</label>
+            <label> Date Of Birth</label>
             <div class="input-group">
               <input id="dateOfBirth0" class="form-control" readonly>
             </div>
@@ -262,25 +260,25 @@
         </div>
         <div class="col">
           <div class="form-group">
-            <label> address</label>
+            <label>Address</label>
             <div class="input-group">
               <input id="address0" class="form-control" readonly>
             </div>
           </div>
           <div class="form-group">
-            <label> email</label>
+            <label>Email</label>
             <div class="input-group">
               <input id="email0" class="form-control" readonly>
             </div>
           </div>
           <div class="form-group">
-            <label> phone</label>
+            <label>Phone</label>
             <div class="input-group">
               <input id="phone0" class="form-control" readonly>
             </div>
           </div>
           <div class="form-group">
-            <label> familySituation</label>
+            <label>Family Situation</label>
             <div class="input-group">
               <input id="familySituation0" class="form-control" readonly>
             </div>
@@ -314,24 +312,24 @@
       <div class="row">
         <div class="col-md-6">
           <div class="mb-3">
-            <label class="form-label">FirstName:</label>
+            <label class="form-label">First Name:</label>
             <input  id="firstName1" type="text" formControlName="firstName" class="form-control" >
             <span class="text-danger"
                   *ngIf="newPatientFormGroup.controls['firstName'].touched
                 && newPatientFormGroup.controls['firstName'].errors
                 && newPatientFormGroup.controls['firstName'].errors!['required']">
-            firstName is Required
+            first Name is Required
           </span>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">LastName:</label>
+            <label class="form-label">Last Name:</label>
             <input type="text" formControlName="lastName" class="form-control">
             <span class="text-danger"
                   *ngIf="newPatientFormGroup.controls['lastName'].touched
                 && newPatientFormGroup.controls['lastName'].errors
                 && newPatientFormGroup.controls['lastName'].errors!['required']">
-            lastName is Required
+            last Name is Required
           </span>
           </div>
 
@@ -342,68 +340,68 @@
                   *ngIf="newPatientFormGroup.controls['cin'].touched
                 && newPatientFormGroup.controls['cin'].errors
                 && newPatientFormGroup.controls['cin'].errors!['required']">
-            cin is Required
+            Cin is Required
           </span>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">insuranceNumber:</label>
+            <label class="form-label">Insurance Number:</label>
             <input type="text" formControlName="insuranceNumber" class="form-control">
             <span class="text-danger"
                   *ngIf="newPatientFormGroup.controls['insuranceNumber'].touched
                 && newPatientFormGroup.controls['insuranceNumber'].errors
                 && newPatientFormGroup.controls['insuranceNumber'].errors!['required']">
-            insuranceNumber is Required
+            Insurance Number is Required
           </span>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">dateOfBirth:</label>
+            <label class="form-label">Date Of Birth:</label>
             <input type="date" formControlName="dateOfBirth" class="form-control">
             <span class="text-danger"
                   *ngIf="newPatientFormGroup.controls['dateOfBirth'].touched
                 && newPatientFormGroup.controls['dateOfBirth'].errors
                 && newPatientFormGroup.controls['dateOfBirth'].errors!['required']">
-            postalCode is Required
+            Date Of Birth is Required
           </span>
           </div>
         </div>
         <div class="col-md-6">
           <div class="mb-3">
-            <label class="form-label">address:</label>
+            <label class="form-label">Address:</label>
             <input type="text" formControlName="address" class="form-control">
             <span class="text-danger"
                   *ngIf="newPatientFormGroup.controls['address'].touched
                 && newPatientFormGroup.controls['address'].errors
                 && newPatientFormGroup.controls['address'].errors!['required']">
-            address is Required
+            Address is Required
           </span>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">email:</label>
+            <label class="form-label">Email:</label>
             <input type="text" formControlName="email" class="form-control">
             <span class="text-danger"
                   *ngIf="newPatientFormGroup.controls['email'].touched
                 && newPatientFormGroup.controls['email'].errors
                 && newPatientFormGroup.controls['email'].errors!['required']">
-            email is Required
+            Email is Required
           </span>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">phone:</label>
+            <label class="form-label">Phone:</label>
             <input type="text" formControlName="phone" class="form-control">
             <span class="text-danger"
                   *ngIf="newPatientFormGroup.controls['phone'].touched
                 && newPatientFormGroup.controls['phone'].errors
                 && newPatientFormGroup.controls['phone'].errors!['required']">
-            phone is Required
+            Phone is Required
           </span>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">familySituation:</label>
+            <label class="form-label">Family Situation:</label>
             <!--            <input type="text" formControlName="familySituation" class="form-control">-->
             <select formControlName="familySituation" class="form-control">
               <option *ngFor="let situation of familySituations" [value]="situation">{{ situation }}</option>
@@ -412,7 +410,7 @@
                   *ngIf="newPatientFormGroup.controls['familySituation'].touched
                 && newPatientFormGroup.controls['familySituation'].errors
                 && newPatientFormGroup.controls['familySituation'].errors!['required']">
-            familySituation is Required
+            Family Situation is Required
           </span>
           </div>
         </div>

@@ -191,6 +191,7 @@ export class PatientComponent implements OnInit{
         idPatient: patient.idPatient,
         firstName: patient.firstName,
         lastName: patient.lastName,
+        cin : patient.cin,
         insuranceNumber: patient.insuranceNumber,
         dateOfBirth: patient.dateOfBirth,
         address: patient.address,
@@ -206,4 +207,6 @@ export class PatientComponent implements OnInit{
   }
 
   protected readonly async = async;
+  selectedFamilySituation: string = '';
+
 }
