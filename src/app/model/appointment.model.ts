@@ -1,6 +1,5 @@
 import {IllnessState} from "../shared/enums/illnessState.enum";
 import {PatientState} from "../shared/enums/PatientState.enum";
-import {dateSelectionJoinTransformer} from "@fullcalendar/core/internal";
 
 export interface Appointment {
   patientId: number;

@@ -1,1 +1,326 @@
-<p>medicalstaff works!</p>
+<!-- Recent Staff Start -->
+<div class="content d-flex justify-content-center">
+  <div class="container">
+    <ng-container *ngIf=" medicalStaffs | async as listStaffs; else failureOrLoading">
+      <div class="card">
+        <div class="card-header">
+          <div class="row-cols-auto">
+            <div class="row-cols-auto">List of Medical Staff</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div *ngIf="searchFormGroup">
+            <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchMedicalStaffs()">
+              <div class="input-group">
+                <label class="input-group-text mx-1">Search :</label>
+                <input type="text" formControlName="keyword" class="form-control mx-1" placeholder="Search by last name...">
+                <div class="btn-group">
+                  <button type="submit" class="btn btn-info mx-1">
+                    <i class="bi bi-search"></i>
+                  </button>
+                  <button type="submit" class="btn btn-secondary mx-1" (click)="handleAllMedicalStaffs()">
+                    <i>All Staffs</i>
+                  </button>
+                  <button class="btn btn-md btn-success mx-1" (click)="open(content)">
+                    <i class="bi bi-person-plus-fill">Add new staff</i>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <table class="table">
+            <thead>
+            <tr>
+              <th>ID</th><th>First name</th><th>Last name</th><th>Cin</th><th>Address</th><th>Email</th><th>Phone</th><th>Staff Role</th><th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let staff of medicalStaffs | async">
+              <td>{{ staff.id }}</td>
+              <td>{{ staff.firstName }}</td>
+              <td>{{ staff.lastName }}</td>
+              <td>{{ staff.cin }}</td>
+              <td>{{ staff.address }}</td>
+              <td>{{ staff.email }}</td>
+              <td>{{ staff.phone }}</td>
+              <td>{{ staff.staffRole }}</td>
+              <td>
+                <div class="btn-group">
+                  <button class="btn btn-primary mx-1" (click)="openDetails(contentDetails, staff)">
+                    <i class="bi bi-eye-fill"></i>
+                  </button>
+                  <button class="btn btn-warning mx-1" (click)="openEdit(updateStaff, staff)">
+                    <i class="bi bi-pen"></i>
+                  </button>
+                  <button class="btn btn-danger mx-1" (click)="handleDeleteMedicalStaff(staff)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #failureOrLoading>
+      <ng-container *ngIf="errorMessage; else loading">
+        <div class="text-danger">
+          {{ errorMessage }}
+        </div>
+      </ng-container>
+      <ng-template #loading>
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+          <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </ng-template>
+    </ng-template>
+  </div>
+</div>
+
+<!-- NewStaffModal -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">New Medical Staff</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="newMedicalStaffFormGroup" (ngSubmit)="handleSaveMedicalStaff()">
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label">First Name:</label>
+            <input type="text" formControlName="firstName" class="form-control">
+            <span class="text-danger"
+                  *ngIf="newMedicalStaffFormGroup.controls['firstName'].touched
+                && newMedicalStaffFormGroup.controls['firstName'].errors
+                && newMedicalStaffFormGroup.controls['firstName'].errors!['required']">
+            First Name is Required
+          </span>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Last Name:</label>
+            <input type="text" formControlName="lastName" class="form-control">
+            <span class="text-danger"
+                  *ngIf="newMedicalStaffFormGroup.controls['lastName'].touched
+                && newMedicalStaffFormGroup.controls['lastName'].errors
+                && newMedicalStaffFormGroup.controls['lastName'].errors!['required']">
+            Last Name is Required
+          </span>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">CIN:</label>
+            <input type="text" formControlName="cin" class="form-control">
+            <span class="text-danger"
+                  *ngIf="newMedicalStaffFormGroup.controls['cin'].touched
+                && newMedicalStaffFormGroup.controls['cin'].errors
+                && newMedicalStaffFormGroup.controls['cin'].errors!['required']">
+            Cin is Required
+          </span>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Address:</label>
+            <input type="text" formControlName="address" class="form-control">
+            <span class="text-danger"
+                  *ngIf="newMedicalStaffFormGroup.controls['address'].touched
+                && newMedicalStaffFormGroup.controls['address'].errors
+                && newMedicalStaffFormGroup.controls['address'].errors!['required']">
+            Address is Required
+          </span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label">Email:</label>
+            <input type="text" formControlName="email" class="form-control">
+            <span class="text-danger"
+                  *ngIf="newMedicalStaffFormGroup.controls['email'].touched
+                && newMedicalStaffFormGroup.controls['email'].errors
+                && newMedicalStaffFormGroup.controls['email'].errors!['required']">
+            Email is Required
+          </span>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Phone:</label>
+            <input type="text" formControlName="phone" class="form-control">
+            <span class="text-danger"
+                  *ngIf="newMedicalStaffFormGroup.controls['phone'].touched
+                && newMedicalStaffFormGroup.controls['phone'].errors
+                && newMedicalStaffFormGroup.controls['phone'].errors!['required']">
+            Phone is Required
+          </span>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Staff Role:</label>
+            <select  id="staffRole1" formControlName="staffRole" class="form-control"[(ngModel)]="selectedStaffRole">
+              <option  value="" selected disabled >Select staff Role</option>
+              <option *ngFor="let situation of staffRole" [value]="situation">{{ situation }}</option>
+            </select>
+            <span class="text-danger"
+                  *ngIf="newMedicalStaffFormGroup.controls['staffRole'].touched
+                && newMedicalStaffFormGroup.controls['staffRole'].errors
+                && newMedicalStaffFormGroup.controls['staffRole'].errors!['required']">
+            Staff Role is Required
+          </span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button [disabled]="!newMedicalStaffFormGroup.valid" class="btn btn-success" (click)="modal.close('Save click')">Save</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<!-- ContentDetails -->
+<ng-template #contentDetails let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title1">Medical Staff Details</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label>First Name:</label>
+            <input id="firstName0" class="form-control" readonly>
+          </div>
+          <div class="form-group">
+            <label>Last Name:</label>
+            <input id="lastName0" class="form-control" readonly>
+          </div>
+          <div class="form-group">
+            <label>CIN:</label>
+            <input id="cin0" class="form-control" readonly>
+          </div>
+          <div class="form-group">
+            <label>Address:</label>
+            <input id="address0" class="form-control" readonly>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label>Email:</label>
+            <input id="email0" class="form-control" readonly>
+          </div>
+          <div class="form-group">
+            <label>Phone:</label>
+            <input id="phone0" class="form-control" readonly>
+          </div>
+          <div class="form-group">
+            <label>Staff Role:</label>
+            <input id="staffRole0" class="form-control" readonly>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger" (click)="modal.close('Close click')">Close</button>
+  </div>
+</ng-template>
+
+<!-- UpdateModalStaff -->
+<ng-template #updateStaff let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title3">Update Medical Staff</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="editMedicalStaffFormGroup" (ngSubmit)="handleUpdateMedicalStaff()">
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label">First Name:</label>
+            <input id="firstName1" type="text" formControlName="firstName" class="form-control">
+            <span class="text-danger"
+                  *ngIf="editMedicalStaffFormGroup.controls['firstName'].touched
+                && editMedicalStaffFormGroup.controls['firstName'].errors
+                && editMedicalStaffFormGroup.controls['firstName'].errors!['required']">
+            First Name is Required
+          </span>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Last Name:</label>
+            <input type="text" formControlName="lastName" class="form-control">
+            <span class="text-danger"
+                  *ngIf="editMedicalStaffFormGroup.controls['lastName'].touched
+                && editMedicalStaffFormGroup.controls['lastName'].errors
+                && editMedicalStaffFormGroup.controls['lastName'].errors!['required']">
+            Last Name is Required
+          </span>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">CIN:</label>
+            <input type="text" formControlName="cin" class="form-control">
+            <span class="text-danger"
+                  *ngIf="editMedicalStaffFormGroup.controls['cin'].touched
+                && editMedicalStaffFormGroup.controls['cin'].errors
+                && editMedicalStaffFormGroup.controls['cin'].errors!['required']">
+            Cin is Required
+          </span>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Address:</label>
+            <input type="text" formControlName="address" class="form-control">
+            <span class="text-danger"
+                  *ngIf="editMedicalStaffFormGroup.controls['address'].touched
+                && editMedicalStaffFormGroup.controls['address'].errors
+                && editMedicalStaffFormGroup.controls['address'].errors!['required']">
+            Adress is Required
+          </span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label class="form-label">Email:</label>
+            <input type="text" formControlName="email" class="form-control">
+            <span class="text-danger"
+                  *ngIf="editMedicalStaffFormGroup.controls['email'].touched
+                && editMedicalStaffFormGroup.controls['email'].errors
+                && editMedicalStaffFormGroup.controls['email'].errors!['required']">
+            Email is Required
+          </span>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Phone:</label>
+            <input type="text" formControlName="phone" class="form-control">
+            <span class="text-danger"
+                  *ngIf="editMedicalStaffFormGroup.controls['phone'].touched
+                && editMedicalStaffFormGroup.controls['phone'].errors
+                && editMedicalStaffFormGroup.controls['phone'].errors!['required']">
+            Phone is Required
+          </span>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Staff Role:</label>
+            <select  formControlName="staffRole" class="form-control">
+              <option *ngFor="let situation of staffRole" [value]="situation">{{ situation }}</option>
+            </select>
+            <span class="text-danger"
+                  *ngIf="editMedicalStaffFormGroup.controls['staffRole'].touched
+                && editMedicalStaffFormGroup.controls['staffRole'].errors
+                && editMedicalStaffFormGroup.controls['staffRole'].errors!['required']">
+            Staff Role is Required
+          </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button [disabled]="!editMedicalStaffFormGroup.valid" class="btn btn-outline-warning" (click)="modal.close('Save click')">Save change</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
