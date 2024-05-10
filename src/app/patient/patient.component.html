@@ -12,27 +12,23 @@
           <div *ngIf="searchFormGroup">
             <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchPatients()">
               <div class="input-group">
-                <label class="input-group-text">Keyword :</label>
-                <input type="text" formControlName="keyword" class="form-control" placeholder="Search by last name...">
-                <button class="btn btn-info">
-                  <i class="bi bi-search"></i>
-                </button>
+                <label class="input-group-text mx-1">Search :</label>
+                <input type="text" formControlName="keyword" class="form-control mx-1" placeholder="Search by last name..." >
+                <div class="btn-group">
+                  <button type="submit" class="btn btn-info mx-1">
+                    <i class="bi bi-search"></i>
+                  </button>
+                  <button class="btn btn-md btn-success mx-1" (click)="open(content)">
+                    <i class="bi bi-person-plus-fill">Add new patient</i>
+                  </button>
+                </div>
               </div>
             </form>
           </div>
-
           <table class="table">
             <thead>
             <tr>
-              <th>ID</th><th>First name</th><th>Last name</th><th>Cin</th><th>Insurance number</th><th>Patient</th><th>Email</th><th>Phone</th><th>Family situation</th><th>Actions</th>
-              <th></th>
-              <th>
-                <div>
-                  <button class="btn btn-md btn-success" (click)="open(content)">
-                    <i class="bi bi-person-plus-fill"></i>
-                  </button>
-                </div>
-              </th>
+              <th>ID</th><th>First name</th><th>Last name</th><th>Cin</th><th>Insurance number</th><th>Adress</th><th>Email</th><th>Phone</th><th>Family situation</th><th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -75,8 +71,11 @@
         </div>
       </ng-container>
       <ng-template #loading>
-        Loading .....
-      </ng-template>
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+          <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>      </ng-template>
     </ng-template>
   </div>
 </div>
@@ -90,57 +89,119 @@
     </button>
   </div>
   <div class="modal-body">
-    <form [formGroup]="newAppwithPatientFormGroup" (ngSubmit)="handleSaveAppointmentWithPatient()" >
-
+    <form [formGroup]="newAppwithPatientFormGroup" (ngSubmit)="handleSaveAppointmentWithPatient()">
       <div class="row">
-
         <div class="col-md-6">
+
           <div class="mb-3">
             <label class="form-label">ID:</label>
-            <input  type="text" formControlName="patientId" class="form-control" >
+            <input  type="text" formControlName="patientId" class="form-control" [readOnly]="true" >
           </div>
-
           <div class="mb-3">
             <label class="form-label">Date:</label>
-            <input  type="date" formControlName="date" class="form-control" >
+            <input  type="date" formControlName="date" class="form-control" [value]="getCurrentDate()">
+            <span class="text-danger"
+                  *ngIf="newAppwithPatientFormGroup.controls['date'].touched
+                && newAppwithPatientFormGroup.controls['firstName'].errors
+                && newAppwithPatientFormGroup.controls['date'].errors!['required']">
+            Date is Required
+          </span>
           </div>
-
           <div class="mb-3">
             <label class="form-label">Time:</label>
             <input type="time" formControlName="time" class="form-control">
+            <span class="text-danger"
+                  *ngIf="newAppwithPatientFormGroup.controls['time'].touched
+                && newAppwithPatientFormGroup.controls['time'].errors
+                && newAppwithPatientFormGroup.controls['time'].errors!['required']">
+            Time is Required
+          </span>
           </div>
 
           <div class="mb-3">
-            <label class="form-label">activationState:</label>
-            <input type="text" formControlName="activationState" class="form-control" >
+            <label class="form-label">Activation State:</label>
+            <div class="form-check">
+              <input  type="radio" class="form-check-input" formControlName="activationState" id="activationStateTrue" name="activationState" [value]="true" >
+              <label class="form-check-label" for="activationStateTrue" >True</label>
+            </div>
+            <div class="form-check">
+              <input type="radio" class="form-check-input" formControlName="activationState" id="activationStateFalse" name="activationState" [value]="false">
+              <label class="form-check-label" for="activationStateFalse">False</label>
+            </div>
+            <span class="text-danger"
+                  *ngIf="newAppwithPatientFormGroup.controls['activationState'].touched
+                && newAppwithPatientFormGroup.controls['activationState'].errors
+                && newAppwithPatientFormGroup.controls['activationState'].errors!['required']">
+            Activation State is Required
+          </span>
           </div>
         </div>
+
         <div class="col-md-6">
-          <div class="mb-3">
-            <label class="form-label">confirmation:</label>
-            <input type="text" formControlName="confirmation" class="form-control">
-          </div>
 
           <div class="mb-3">
-            <label class="form-label">stateOfIllness:</label>
-            <input type="text" formControlName="stateOfIllness" class="form-control">
+            <label class="form-label">Confirmation:</label>
+            <div class="form-check">
+              <input type="radio" class="form-check-input" formControlName="confirmation" id="confirmationTrue" name="confirmation" [value]="true">
+              <label class="form-check-label" for="confirmationTrue">True</label>
+            </div>
+            <div class="form-check">
+              <input type="radio" class="form-check-input" formControlName="confirmation" id="confirmationFalse" name="confirmation" [value]="false">
+              <label class="form-check-label" for="confirmationFalse">False</label>
+            </div>
+            <span class="text-danger"
+                  *ngIf="newAppwithPatientFormGroup.controls['confirmation'].touched
+                && newAppwithPatientFormGroup.controls['confirmation'].errors
+                && newAppwithPatientFormGroup.controls['confirmation'].errors!['required']">
+            Confirmation is Required
+          </span>
           </div>
-
           <div class="mb-3">
-            <label class="form-label">statesOfPatient:</label>
-            <input type="text" formControlName="stateOfPatient" class="form-control">
+            <label for="stateOfIllness">state Of Illness</label>
+            <select  id="stateOfIllness" formControlName="stateOfIllness" class="form-control"[(ngModel)]="selectedStateOfIllness">
+              <option  value="" selected disabled >Select stateOfIllness</option>
+              <option *ngFor="let situation of statesOfIllness" [value]="situation">{{ situation }}</option>
+            </select>
+            <!--          <input type="text" formControlName="familySituation" class="form-control">-->
+            <span class="text-danger"
+                  *ngIf="newAppwithPatientFormGroup.controls['stateOfIllness'].touched
+                && newAppwithPatientFormGroup.controls['stateOfIllness'].errors
+                && newAppwithPatientFormGroup.controls['stateOfIllness'].errors!['required']">
+            State Of Illness is Required
+          </span>
+          </div>
+          <div class="mb-3">
+            <label for="stateOfPatient">States Of Patient</label>
+            <select  id="stateOfPatient" formControlName="stateOfPatient" class="form-control" [(ngModel)]="selectStateOfPatients">
+              <option  value="" selected disabled >Select Family Situation</option>
+              <option *ngFor="let situation of statesOfPatient" [value]="situation">{{ situation }}</option>
+            </select>
+
+            <!--          <input type="text" formControlName="familySituation" class="form-control">-->
+            <span class="text-danger"
+                  *ngIf="newAppwithPatientFormGroup.controls['stateOfPatient'].touched
+                && newAppwithPatientFormGroup.controls['stateOfPatient'].errors
+                && newAppwithPatientFormGroup.controls['stateOfPatient'].errors!['required']">
+            Family Situation is Required
+          </span>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="mb-3">
-          <label class="form-label">ReasonOfAppointment:</label>
+          <label class="form-label">Reason Of Appointment:</label>
           <input type="text" formControlName="reasonOfAppointment" class="form-control">
+          <span class="text-danger"
+                *ngIf="newAppwithPatientFormGroup.controls['reasonOfAppointment'].touched
+                && newAppwithPatientFormGroup.controls['reasonOfAppointment'].errors
+                && newAppwithPatientFormGroup.controls['reasonOfAppointment'].errors!['required']">
+            Reason Of Appointment is Required
+          </span>
         </div>
       </div>
       <div class="modal-footer">
         <!--        [disabled]="!newAppointmentFormGroup.valid"-->
-        <button  class="btn btn-outline-success" (click)="modal.close('Save click')">Save</button>
+        <button [disabled]="!newAppwithPatientFormGroup.valid"  class="btn btn-outline-success" (click)="modal.close('Save click')">Save</button>
       </div>
     </form>
   </div>
@@ -161,10 +222,9 @@
 
     <form [formGroup]="newPatientFormGroup" (ngSubmit)="handleSavePatient()">
 
-      <div class="row-cols-auto">
-
-        <div class="col-md-auto">
-          <div class="mb-auto">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
             <label class="form-label">First Name:</label>
             <input type="text" formControlName="firstName" class="form-control" >
             <span class="text-danger"
@@ -174,8 +234,7 @@
             First Name is Required
           </span>
           </div>
-
-          <div class="mb-auto">
+          <div class="mb-3">
             <label class="form-label">Last Name:</label>
             <input type="text" formControlName="lastName" class="form-control">
             <span class="text-danger"
@@ -185,7 +244,7 @@
             last Name is Required
           </span>
           </div>
-          <div class="mb-auto">
+          <div class="mb-3">
             <label class="form-label">Cin:</label>
             <input type="text" formControlName="cin" class="form-control">
             <span class="text-danger"
@@ -195,8 +254,7 @@
             Cin is Required
           </span>
           </div>
-
-          <div class="mb-auto">
+          <div class="mb-3">
             <label class="form-label">Insurance Number:</label>
             <input type="text" formControlName="insuranceNumber" class="form-control">
             <span class="text-danger"
@@ -206,7 +264,6 @@
             Insurance Number is Required
           </span>
           </div>
-
           <div class="mb-3">
             <label class="form-label">Date Of Birth:</label>
             <input type="date" formControlName="dateOfBirth" class="form-control">
@@ -218,8 +275,6 @@
           </span>
           </div>
         </div>
-
-
         <div class="col-md-6">
           <div class="mb-3">
             <label class="form-label">Address:</label>
@@ -231,7 +286,6 @@
             Address is Required
           </span>
           </div>
-
           <div class="mb-3">
             <label class="form-label">Email:</label>
             <input type="text" formControlName="email" class="form-control">
@@ -242,7 +296,6 @@
             Email is Required
           </span>
           </div>
-
           <div class="mb-3">
             <label class="form-label">Phone:</label>
             <input type="text" formControlName="phone" class="form-control">
@@ -253,7 +306,6 @@
             Phone is Required
           </span>
           </div>
-
           <div class="mb-3">
             <label for="familySituation">Family Situation</label>
             <select id="familySituation" formControlName="familySituation" class="form-control" [(ngModel)]="selectedFamilySituation">
@@ -271,7 +323,6 @@
           </div>
         </div>
       </div>
-
 
       <div class="modal-footer">
         <!--        [disabled]="!newPatientFormGroup.valid"-->
@@ -363,7 +414,7 @@
 
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Close click')">Close</button>
+    <button type="button" class="btn btn-outline-danger" (click)="modal.close('Close click')">Close</button>
   </div>
 </ng-template>
 
@@ -385,9 +436,9 @@
             <label class="form-label">First Name:</label>
             <input  id="firstName1" type="text" formControlName="firstName" class="form-control" >
             <span class="text-danger"
-                  *ngIf="newPatientFormGroup.controls['firstName'].touched
-                && newPatientFormGroup.controls['firstName'].errors
-                && newPatientFormGroup.controls['firstName'].errors!['required']">
+                  *ngIf="editPatientFormGroup.controls['firstName'].touched
+                && editPatientFormGroup.controls['firstName'].errors
+                && editPatientFormGroup.controls['firstName'].errors!['required']">
             first Name is Required
           </span>
           </div>
@@ -396,9 +447,9 @@
             <label class="form-label">Last Name:</label>
             <input type="text" formControlName="lastName" class="form-control">
             <span class="text-danger"
-                  *ngIf="newPatientFormGroup.controls['lastName'].touched
-                && newPatientFormGroup.controls['lastName'].errors
-                && newPatientFormGroup.controls['lastName'].errors!['required']">
+                  *ngIf="editPatientFormGroup.controls['lastName'].touched
+                && editPatientFormGroup.controls['lastName'].errors
+                && editPatientFormGroup.controls['lastName'].errors!['required']">
             last Name is Required
           </span>
           </div>
@@ -407,9 +458,9 @@
             <label class="form-label">Cin:</label>
             <input type="text" formControlName="cin" class="form-control">
             <span class="text-danger"
-                  *ngIf="newPatientFormGroup.controls['cin'].touched
-                && newPatientFormGroup.controls['cin'].errors
-                && newPatientFormGroup.controls['cin'].errors!['required']">
+                  *ngIf="editPatientFormGroup.controls['cin'].touched
+                && editPatientFormGroup.controls['cin'].errors
+                && editPatientFormGroup.controls['cin'].errors!['required']">
             Cin is Required
           </span>
           </div>
@@ -418,9 +469,9 @@
             <label class="form-label">Insurance Number:</label>
             <input type="text" formControlName="insuranceNumber" class="form-control">
             <span class="text-danger"
-                  *ngIf="newPatientFormGroup.controls['insuranceNumber'].touched
-                && newPatientFormGroup.controls['insuranceNumber'].errors
-                && newPatientFormGroup.controls['insuranceNumber'].errors!['required']">
+                  *ngIf="editPatientFormGroup.controls['insuranceNumber'].touched
+                && editPatientFormGroup.controls['insuranceNumber'].errors
+                && editPatientFormGroup.controls['insuranceNumber'].errors!['required']">
             Insurance Number is Required
           </span>
           </div>
@@ -429,9 +480,9 @@
             <label class="form-label">Date Of Birth:</label>
             <input type="date" formControlName="dateOfBirth" class="form-control">
             <span class="text-danger"
-                  *ngIf="newPatientFormGroup.controls['dateOfBirth'].touched
-                && newPatientFormGroup.controls['dateOfBirth'].errors
-                && newPatientFormGroup.controls['dateOfBirth'].errors!['required']">
+                  *ngIf="editPatientFormGroup.controls['dateOfBirth'].touched
+                && editPatientFormGroup.controls['dateOfBirth'].errors
+                && editPatientFormGroup.controls['dateOfBirth'].errors!['required']">
             Date Of Birth is Required
           </span>
           </div>
@@ -441,9 +492,9 @@
             <label class="form-label">Address:</label>
             <input type="text" formControlName="address" class="form-control">
             <span class="text-danger"
-                  *ngIf="newPatientFormGroup.controls['address'].touched
-                && newPatientFormGroup.controls['address'].errors
-                && newPatientFormGroup.controls['address'].errors!['required']">
+                  *ngIf="editPatientFormGroup.controls['address'].touched
+                && editPatientFormGroup.controls['address'].errors
+                && editPatientFormGroup.controls['address'].errors!['required']">
             Address is Required
           </span>
           </div>
@@ -452,9 +503,9 @@
             <label class="form-label">Email:</label>
             <input type="text" formControlName="email" class="form-control">
             <span class="text-danger"
-                  *ngIf="newPatientFormGroup.controls['email'].touched
-                && newPatientFormGroup.controls['email'].errors
-                && newPatientFormGroup.controls['email'].errors!['required']">
+                  *ngIf="editPatientFormGroup.controls['email'].touched
+                && editPatientFormGroup.controls['email'].errors
+                && editPatientFormGroup.controls['email'].errors!['required']">
             Email is Required
           </span>
           </div>
@@ -463,9 +514,9 @@
             <label class="form-label">Phone:</label>
             <input type="text" formControlName="phone" class="form-control">
             <span class="text-danger"
-                  *ngIf="newPatientFormGroup.controls['phone'].touched
-                && newPatientFormGroup.controls['phone'].errors
-                && newPatientFormGroup.controls['phone'].errors!['required']">
+                  *ngIf="editPatientFormGroup.controls['phone'].touched
+                && editPatientFormGroup.controls['phone'].errors
+                && editPatientFormGroup.controls['phone'].errors!['required']">
             Phone is Required
           </span>
           </div>
@@ -477,24 +528,17 @@
               <option *ngFor="let situation of familySituations" [value]="situation">{{ situation }}</option>
             </select>
             <span class="text-danger"
-                  *ngIf="newPatientFormGroup.controls['familySituation'].touched
-                && newPatientFormGroup.controls['familySituation'].errors
-                && newPatientFormGroup.controls['familySituation'].errors!['required']">
+                  *ngIf="editPatientFormGroup.controls['familySituation'].touched
+                && editPatientFormGroup.controls['familySituation'].errors
+                && editPatientFormGroup.controls['familySituation'].errors!['required']">
             Family Situation is Required
           </span>
           </div>
         </div>
       </div>
-
-
-
-
       <div class="modal-footer">
-        <!--        [disabled]="!editPatientFormGroup.valid"-->
-        <button class="btn btn-info" (click)="modal.close('Save click')">Save change</button>
-        <!--        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>-->
+        <button [disabled]="!editPatientFormGroup.valid" class="btn btn-outline-warning" (click)="modal.close('Save click')">Save change</button>
       </div>
-
     </form>
   </div>
 </ng-template>

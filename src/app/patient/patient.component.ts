@@ -10,6 +10,8 @@ import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
 import {FamilySituation} from "../shared/enums/family-situation.enum";
 import {Appointment} from "../model/appointment.model";
 import {AppointmentService} from "../services/appointment.service";
+import {IllnessState} from "../shared/enums/illnessState.enum";
+import {PatientState} from "../shared/enums/PatientState.enum";
 @Component({
   selector: 'app-patient',
   standalone: true,
@@ -27,6 +29,8 @@ export class PatientComponent implements OnInit{
   patients !: Observable<Array<Patient>>;
   patient!: Patient;
   familySituations: string[] = Object.keys(FamilySituation).map(key => FamilySituation[key as keyof typeof FamilySituation]);
+  statesOfIllness: string[] = Object.keys(IllnessState).map(key => IllnessState[key as keyof typeof IllnessState]);
+  statesOfPatient: string[] = Object.keys(PatientState).map(key => PatientState[key as keyof typeof PatientState]);
   errorMessage !: string;
   searchFormGroup !: FormGroup | undefined;
   closeResult!: string;
@@ -49,14 +53,14 @@ export class PatientComponent implements OnInit{
     });
     this.handleSearchPatients();
     this.newAppwithPatientFormGroup = this.fb.group({
-      patientId : this.fb.control(null),
-      date: this.fb.control(new Date()),
-      time : this.fb.control(null),
-      reasonOfAppointment : this.fb.control('default value...'),
-      activationState : this.fb.control('true'),
-      confirmation : this.fb.control('true'),
-      stateOfIllness : this.fb.control('STABLE'),
-      stateOfPatient : this.fb.control('CALM'),
+      patientId : this.fb.control(null,[Validators.required]),
+      date: this.fb.control(this.getCurrentDate(),[Validators.required]),
+      time : this.fb.control(this.getCurrentTime(),[Validators.required]),
+      reasonOfAppointment : this.fb.control(null,[Validators.required,Validators.minLength(4)]),
+      activationState : this.fb.control(true, [Validators.required]), // Définir la valeur à true ici
+      confirmation : this.fb.control(false, [Validators.required]), // Définir la valeur à true ici
+      stateOfIllness : this.fb.control('Select stateOfIllness',[Validators.required]),
+      stateOfPatient : this.fb.control('Select stateOfPatient',[Validators.required]),
     })
 
 
@@ -138,6 +142,19 @@ export class PatientComponent implements OnInit{
         console.log(err);
       }
     })
+  }
+  getCurrentDate(): string {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  getCurrentTime(): string {
+    const currentDate = new Date();
+    const hours = String(currentDate.getHours()).padStart(2, '0');
+    const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
   }
   handleSaveAppointmentWithPatient(){
     let appointment : Appointment=this.newAppwithPatientFormGroup.value;
@@ -254,5 +271,7 @@ export class PatientComponent implements OnInit{
 
   protected readonly async = async;
   selectedFamilySituation: string = '';
-
+  selectedStateOfIllness: string = '';
+  selectStateOfPatients : string = '';
 }
+

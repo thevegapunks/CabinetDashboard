@@ -11,15 +11,14 @@
           <div *ngIf="searchFormGroup">
             <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchAppointments()">
               <div class="input-group">
-                <label class="input-group-text">Search by Date</label>
-                <input type="date" formControlName="keyword" class="form-control" (change)="handleSearchAppointments()">
+                <label class="input-group-text mx-1">Search by Date</label>
+                <input type="date" formControlName="keyword" class="form-control mx-1" (change)="handleSearchAppointments()">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-secondary mx-1" (click)="handleSearchByWeek()">Semaine</button>
-                  <button type="button" class="btn btn-secondary mx-1" (click)="handleSearchByMonth()" >Mois</button>
-                  <button type="button" class="btn btn-secondary mx-1" (click)="handleSearchByYear()">Année</button>
-                  <button class="btn btn-md btn-success mx-1" (click)="open(content)">
-                    <i class="bi bi-person-plus-fill"></i>
-                  </button>
+                  <label class="input-group-text mx-1">Search by</label>
+                  <button type="button" class="btn btn-secondary mx-1" (click)="handleSearchAppointments()">Day</button>
+                  <button type="button" class="btn btn-secondary mx-1" (click)="handleSearchByWeek()">Week</button>
+                  <button type="button" class="btn btn-secondary mx-1" (click)="handleSearchByMonth()" >Mounth</button>
+                  <button type="button" class="btn btn-secondary mx-1" (click)="handleSearchByYear()">Year</button>
                 </div>
               </div>
             </form>
